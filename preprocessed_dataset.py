@@ -1,5 +1,3 @@
-# preprocessed_dataset.py
-
 import torch
 from torch.utils.data import Dataset
 import os
@@ -7,30 +5,29 @@ import glob
 
 class PreprocessedDataset(Dataset):
     """
-    Um Dataset customizado do PyTorch para carregar dados que já foram 
+    Dataset customizado do PyTorch para carregar dados que já foram 
     pré-processados e salvos em arquivos .pt.
     
     Esta classe é muito mais rápida que o DataLoader original porque sua única
     tarefa é ler arquivos do disco, em vez de realizar cálculos pesados
-    (como gerar espectrogramas) em tempo real.
+    (como gerar espectrogramas) em tempo real, o que otimiza os laços realizados sobre os dados.
     """
     def __init__(self, data_dir):
         """
-        O construtor da classe. Sua principal tarefa é encontrar e listar
+        Construtor da classe. Sua principal tarefa é encontrar e listar
         todos os arquivos de dados na pasta especificada.
 
         :param data_dir: O caminho para a pasta que contém os arquivos .pt.
-                         Ex: '/content/processed_data/train/'
+                         Ex: '/processed_data/train/'
         """
-        # Cria um padrão para encontrar todos os arquivos que terminam com .pt
+        # cria um padrão para encontrar todos os arquivos que terminam com .pt
         # os.path.join garante que o caminho seja construído corretamente em qualquer sistema operacional.
         path_pattern = os.path.join(data_dir, '*.pt')
         
-        # glob.glob encontra todos os caminhos de arquivo que correspondem ao padrão
-        # e retorna uma lista com eles.
+        # encontra todos os caminhos de arquivo que correspondem ao padrão e retorna uma lista com eles.
         self.file_paths = glob.glob(path_pattern)
         
-        # Uma verificação útil para garantir que os arquivos foram encontrados.
+        # verificação para garantir que os arquivos foram encontrados.
         if not self.file_paths:
             print(f"Aviso: Nenhum arquivo .pt foi encontrado no diretório: {data_dir}")
         else:
@@ -41,7 +38,7 @@ class PreprocessedDataset(Dataset):
         Retorna o número total de amostras no dataset.
         O DataLoader usa este método para saber o tamanho do dataset.
         """
-        # O tamanho do dataset é simplesmente o número de arquivos que encontramos.
+        # o tamanho do dataset é simplesmente o número de arquivos que encontramos.
         return len(self.file_paths)
 
     def __getitem__(self, idx):
@@ -50,20 +47,17 @@ class PreprocessedDataset(Dataset):
         O DataLoader chama este método para cada item que ele precisa pegar.
 
         :param idx: O índice da amostra a ser carregada (de 0 a len(dataset)-1).
-        :return: Um dicionário contendo o tensor de áudio e sua etiqueta (label).
+        :return: Um dicionário contendo o tensor de áudio e sua label.
         """
         # 1. Pega o caminho do arquivo para o índice solicitado
         file_path = self.file_paths[idx]
         
-        # 2. Carrega o arquivo .pt usando a função do PyTorch.
-        # Isso retorna exatamente o objeto que foi salvo, que no nosso caso é um dicionário.
+        # 2. Carrega o arquivo .pt usando a função do PyTorch. Isso retorna o objeto que foi salvo, que no nosso caso é um dicionário.
         loaded_data = torch.load(file_path)
         
-        # 3. Extrai o tensor de áudio e a etiqueta do dicionário carregado
+        # 3. Extrai o tensor de áudio e a label do dicionário carregado.
         audio_tensor = loaded_data['audio']
         label = loaded_data['label']
         
-        # 4. Retorna um novo dicionário no formato que o seu loop de treinamento espera
-        # Manter o mesmo nome de chave ('player_lvl') garante que você não precise
-        # mudar o resto do seu código de treinamento.
+        # 4. Retorna um novo dicionário no formato esperado pelo loop de treinamento.
         return {'audio': audio_tensor, 'player_lvl': label}
