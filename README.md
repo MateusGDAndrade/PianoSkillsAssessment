@@ -6,11 +6,17 @@ Este repositório contém a implementação de um pipeline multimodal para avali
 ---
 ## Integrantes
 Lucas Vizzotto de Castro 
+
 Diego Cabral Morales 
+
 Vitor Okubo
+
 Jean Michel Furtado M'Peko 
+
 Gabriela Barros 
+
 Mateus Gentil Dantas de Andrade 
+
 Pedro Henrique Gonçalez Moracci 
 
 ## 🔍 Visão Geral do Projeto
