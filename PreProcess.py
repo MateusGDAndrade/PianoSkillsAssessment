@@ -1,3 +1,4 @@
+# Script para pré-processar o conjunto de teste: carrega cada amostra de áudio via VideoDataset e salva em .pt
 import os
 import torch
 from dataloader_multimodal import VideoDataset
