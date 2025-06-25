@@ -38,7 +38,8 @@ PianoSkillsAssessment/
 ├── dataloader_multimodal.py   # DataLoader multimodal, disponibilizado pelos autores do artigo
 ├── preprocessed_dataset.py    # Classe do Dataset com dados pré-processados
 ├── opts.py                    # Configurações globais (caminhos, seeds, dims)
-├── t1_redes_neurais.ipynb     # Experimentos de treino e avaliação
+├── main_resnet18.ipynb        # Experimentos de treino e avaliação (com ResNet18)
+├── main_resnet34.ipynb        # Experimentos de treino e avaliação (com ResNet34)
 └── README.md                  # Documentação do projeto
 ```
 
